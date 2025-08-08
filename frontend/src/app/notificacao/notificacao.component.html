@@ -1,0 +1,37 @@
+<div class="container">
+  <h1>Sistema de Notificações Assíncronas</h1>
+
+  <div class="input-section">
+    <input
+      type="text"
+      [(ngModel)]="conteudoMensagem"
+      placeholder="Digite o conteúdo da mensagem..."
+      (keyup.enter)="sendNotification()"
+    />
+    <button (click)="sendNotification()" [disabled]="!conteudoMensagem.trim()">
+      Enviar Notificação
+    </button>
+  </div>
+  <h2>Notificações Enviadas</h2>
+  <ul class="notification-list">
+    <li *ngIf="notificacoes.length === 0" class="empty-state">
+      Nenhuma notificação enviada ainda.
+    </li>
+    <li
+      *ngFor="let notif of notificacoes"
+      [ngClass]="{
+        success: notif.status === 'PROCESSADO_SUCESSO',
+        failure:
+          notif.status === 'FALHA_PROCESSAMENTO' ||
+          notif.status === 'ERRO_ENVIO',
+        pending: notif.status === 'AGUARDANDO_PROCESSAMENTO'
+      }"
+    >
+      <strong>ID:</strong> {{ notif.mensagemId }}
+
+      <strong>Conteúdo:</strong> {{ notif.conteudoMensagem }}
+
+      <strong>Status:</strong> {{ notif.status }}
+    </li>
+  </ul>
+</div>
